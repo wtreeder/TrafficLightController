@@ -1,14 +1,10 @@
 # Import packages
 import time
-from collections import deque
-from enum import Enum
 
 import pygame
 
-
-from src.controllers.constants import Color
-import src.controllers.constants as c
-from src.controllers.vehicle import Vehicle
+from .vehicle import Vehicle
+from .constants import *
 
 
 class Signal1:
@@ -259,40 +255,40 @@ t = TrafficLight1()
 
 
 class Signal:
-    def __init__(self, direction: c.Direction, lane: c.Lane, turn: bool, color: c.Color):
+    def __init__(self, direction: Direction, lane: Lane, turn: bool, color: Color):
         self.direction = direction
         self.lane = lane
         self.turn = turn
         self.color = color
 
-        self.x = c.x_signal[self.direction.value][self.lane.value]
-        self.y = c.y_signal[self.direction.value][self.lane.value]
+        self.x = x_signal[self.direction.value][self.lane.value]
+        self.y = y_signal[self.direction.value][self.lane.value]
 
         self._load_image()
 
     def to_red(self):
         self.turn = False
-        self.color = c.Color.RED
+        self.color = Color.RED
         self._load_image()
 
     def to_yellow(self):
         self.turn = False
-        self.color = c.Color.YELLOW
+        self.color = Color.YELLOW
         self._load_image()
 
     def to_green(self):
         self.turn = False
-        self.color = c.Color.GREEN
+        self.color = Color.GREEN
         self._load_image()
 
     def to_right_turn_yellow(self):
         self.turn = True
-        self.color = c.Color.YELLOW
+        self.color = Color.YELLOW
         self._load_image()
 
     def to_right_turn_green(self):
         self.turn = True
-        self.color = c.Color.GREEN
+        self.color = Color.GREEN
         self._load_image()
 
     def _load_image(self):
@@ -301,15 +297,15 @@ class Signal:
         else:
             path = '../images/' + str(self.lane.value) + '_' + str(self.color.value) + '.png'
         image = pygame.image.load(path)
-        self.image = pygame.transform.rotate(image, c.rotation[self.direction.value])
+        self.image = pygame.transform.rotate(image, rotation[self.direction.value])
 
 
 class TrafficLightController:
     def __init__(self):
-        for direction in c.Direction:
-            for lane in c.Lane:
+        for direction in Direction:
+            for lane in Lane:
                 self.signals[direction.value][lane.value] = Signal(direction, lane, False,
-                                                                   c.Color.RED)
+                                                                   Color.RED)
 
     signals = {'east': {'left': None, 'middle': None, 'right': None},
                'south': {'left': None, 'middle': None, 'right': None},
@@ -332,105 +328,105 @@ class TrafficLightController:
 
     # Update signals
     def update_signals(self):
-        self.signals[c.Direction.EAST.value][c.Lane.LEFT.value].to_green()
-        self.signals[c.Direction.EAST.value][c.Lane.MIDDLE.value].to_green()
-        self.signals[c.Direction.EAST.value][c.Lane.RIGHT.value].to_green()
-        self.signals[c.Direction.SOUTH.value][c.Lane.RIGHT.value].to_right_turn_green()
+        self.signals[Direction.EAST.value][Lane.LEFT.value].to_green()
+        self.signals[Direction.EAST.value][Lane.MIDDLE.value].to_green()
+        self.signals[Direction.EAST.value][Lane.RIGHT.value].to_green()
+        self.signals[Direction.SOUTH.value][Lane.RIGHT.value].to_right_turn_green()
 
         time.sleep(10)
 
-        self.signals[c.Direction.EAST.value][c.Lane.LEFT.value].to_yellow()
-        self.signals[c.Direction.SOUTH.value][c.Lane.RIGHT.value].to_right_turn_yellow()
+        self.signals[Direction.EAST.value][Lane.LEFT.value].to_yellow()
+        self.signals[Direction.SOUTH.value][Lane.RIGHT.value].to_right_turn_yellow()
 
         time.sleep(2)
 
-        self.signals[c.Direction.EAST.value][c.Lane.LEFT.value].to_red()
-        self.signals[c.Direction.SOUTH.value][c.Lane.RIGHT.value].to_red()
+        self.signals[Direction.EAST.value][Lane.LEFT.value].to_red()
+        self.signals[Direction.SOUTH.value][Lane.RIGHT.value].to_red()
 
         time.sleep(1)
 
-        self.signals[c.Direction.WEST.value][c.Lane.MIDDLE.value].to_green()
-        self.signals[c.Direction.WEST.value][c.Lane.RIGHT.value].to_green()
+        self.signals[Direction.WEST.value][Lane.MIDDLE.value].to_green()
+        self.signals[Direction.WEST.value][Lane.RIGHT.value].to_green()
 
         time.sleep(10)
 
-        self.signals[c.Direction.EAST.value][c.Lane.MIDDLE.value].to_yellow()
-        self.signals[c.Direction.EAST.value][c.Lane.RIGHT.value].to_yellow()
+        self.signals[Direction.EAST.value][Lane.MIDDLE.value].to_yellow()
+        self.signals[Direction.EAST.value][Lane.RIGHT.value].to_yellow()
 
         time.sleep(2)
 
-        self.signals[c.Direction.EAST.value][c.Lane.MIDDLE.value].to_red()
-        self.signals[c.Direction.EAST.value][c.Lane.RIGHT.value].to_red()
+        self.signals[Direction.EAST.value][Lane.MIDDLE.value].to_red()
+        self.signals[Direction.EAST.value][Lane.RIGHT.value].to_red()
 
         time.sleep(1)
 
-        self.signals[c.Direction.WEST.value][c.Lane.LEFT.value].to_green()
-        self.signals[c.Direction.NORTH.value][c.Lane.RIGHT.value].to_right_turn_green()
+        self.signals[Direction.WEST.value][Lane.LEFT.value].to_green()
+        self.signals[Direction.NORTH.value][Lane.RIGHT.value].to_right_turn_green()
 
         time.sleep(10)
 
-        self.signals[c.Direction.WEST.value][c.Lane.LEFT.value].to_yellow()
-        self.signals[c.Direction.WEST.value][c.Lane.MIDDLE.value].to_yellow()
-        self.signals[c.Direction.WEST.value][c.Lane.RIGHT.value].to_yellow()
-        self.signals[c.Direction.NORTH.value][c.Lane.RIGHT.value].to_right_turn_yellow()
+        self.signals[Direction.WEST.value][Lane.LEFT.value].to_yellow()
+        self.signals[Direction.WEST.value][Lane.MIDDLE.value].to_yellow()
+        self.signals[Direction.WEST.value][Lane.RIGHT.value].to_yellow()
+        self.signals[Direction.NORTH.value][Lane.RIGHT.value].to_right_turn_yellow()
 
         time.sleep(2)
 
-        self.signals[c.Direction.WEST.value][c.Lane.LEFT.value].to_red()
-        self.signals[c.Direction.WEST.value][c.Lane.MIDDLE.value].to_red()
-        self.signals[c.Direction.WEST.value][c.Lane.RIGHT.value].to_red()
-        self.signals[c.Direction.NORTH.value][c.Lane.RIGHT.value].to_red()
+        self.signals[Direction.WEST.value][Lane.LEFT.value].to_red()
+        self.signals[Direction.WEST.value][Lane.MIDDLE.value].to_red()
+        self.signals[Direction.WEST.value][Lane.RIGHT.value].to_red()
+        self.signals[Direction.NORTH.value][Lane.RIGHT.value].to_red()
 
         time.sleep(1)
 
-        self.signals[c.Direction.SOUTH.value][c.Lane.LEFT.value].to_green()
-        self.signals[c.Direction.SOUTH.value][c.Lane.MIDDLE.value].to_green()
-        self.signals[c.Direction.SOUTH.value][c.Lane.RIGHT.value].to_green()
-        self.signals[c.Direction.WEST.value][c.Lane.RIGHT.value].to_right_turn_green()
+        self.signals[Direction.SOUTH.value][Lane.LEFT.value].to_green()
+        self.signals[Direction.SOUTH.value][Lane.MIDDLE.value].to_green()
+        self.signals[Direction.SOUTH.value][Lane.RIGHT.value].to_green()
+        self.signals[Direction.WEST.value][Lane.RIGHT.value].to_right_turn_green()
 
         time.sleep(10)
 
-        self.signals[c.Direction.SOUTH.value][c.Lane.LEFT.value].to_yellow()
-        self.signals[c.Direction.WEST.value][c.Lane.RIGHT.value].to_right_turn_yellow()
+        self.signals[Direction.SOUTH.value][Lane.LEFT.value].to_yellow()
+        self.signals[Direction.WEST.value][Lane.RIGHT.value].to_right_turn_yellow()
 
         time.sleep(2)
 
-        self.signals[c.Direction.SOUTH.value][c.Lane.LEFT.value].to_red()
-        self.signals[c.Direction.WEST.value][c.Lane.RIGHT.value].to_red()
+        self.signals[Direction.SOUTH.value][Lane.LEFT.value].to_red()
+        self.signals[Direction.WEST.value][Lane.RIGHT.value].to_red()
 
         time.sleep(1)
 
-        self.signals[c.Direction.NORTH.value][c.Lane.MIDDLE.value].to_green()
-        self.signals[c.Direction.NORTH.value][c.Lane.RIGHT.value].to_green()
+        self.signals[Direction.NORTH.value][Lane.MIDDLE.value].to_green()
+        self.signals[Direction.NORTH.value][Lane.RIGHT.value].to_green()
 
         time.sleep(10)
 
-        self.signals[c.Direction.SOUTH.value][c.Lane.MIDDLE.value].to_yellow()
-        self.signals[c.Direction.SOUTH.value][c.Lane.RIGHT.value].to_yellow()
+        self.signals[Direction.SOUTH.value][Lane.MIDDLE.value].to_yellow()
+        self.signals[Direction.SOUTH.value][Lane.RIGHT.value].to_yellow()
 
         time.sleep(2)
 
-        self.signals[c.Direction.SOUTH.value][c.Lane.MIDDLE.value].to_red()
-        self.signals[c.Direction.SOUTH.value][c.Lane.RIGHT.value].to_red()
+        self.signals[Direction.SOUTH.value][Lane.MIDDLE.value].to_red()
+        self.signals[Direction.SOUTH.value][Lane.RIGHT.value].to_red()
 
         time.sleep(1)
 
-        self.signals[c.Direction.NORTH.value][c.Lane.LEFT.value].to_green()
-        self.signals[c.Direction.EAST.value][c.Lane.RIGHT.value].to_right_turn_green()
+        self.signals[Direction.NORTH.value][Lane.LEFT.value].to_green()
+        self.signals[Direction.EAST.value][Lane.RIGHT.value].to_right_turn_green()
 
         time.sleep(10)
 
-        self.signals[c.Direction.NORTH.value][c.Lane.LEFT.value].to_yellow()
-        self.signals[c.Direction.NORTH.value][c.Lane.MIDDLE.value].to_yellow()
-        self.signals[c.Direction.NORTH.value][c.Lane.RIGHT.value].to_yellow()
-        self.signals[c.Direction.EAST.value][c.Lane.RIGHT.value].to_right_turn_yellow()
+        self.signals[Direction.NORTH.value][Lane.LEFT.value].to_yellow()
+        self.signals[Direction.NORTH.value][Lane.MIDDLE.value].to_yellow()
+        self.signals[Direction.NORTH.value][Lane.RIGHT.value].to_yellow()
+        self.signals[Direction.EAST.value][Lane.RIGHT.value].to_right_turn_yellow()
 
         time.sleep(2)
 
-        self.signals[c.Direction.NORTH.value][c.Lane.LEFT.value].to_red()
-        self.signals[c.Direction.NORTH.value][c.Lane.MIDDLE.value].to_red()
-        self.signals[c.Direction.NORTH.value][c.Lane.RIGHT.value].to_red()
-        self.signals[c.Direction.EAST.value][c.Lane.RIGHT.value].to_red()
+        self.signals[Direction.NORTH.value][Lane.LEFT.value].to_red()
+        self.signals[Direction.NORTH.value][Lane.MIDDLE.value].to_red()
+        self.signals[Direction.NORTH.value][Lane.RIGHT.value].to_red()
+        self.signals[Direction.EAST.value][Lane.RIGHT.value].to_red()
 
         time.sleep(1)
 
@@ -451,58 +447,58 @@ class TrafficLightController:
                     self._move(vehicle, front_vehicle, index)
 
     def _is_through(self, v: Vehicle):
-        if v.direction == c.Direction.EAST:
-            if not v.is_through and v.x + v.width > c.stopLines[v.direction.value]:
+        if v.direction == Direction.EAST:
+            if not v.is_through and v.x + v.width > stopLines[v.direction.value]:
                 v.is_through = True
-        elif v.direction == c.Direction.SOUTH:
-            if not v.is_through and v.y + v.height > c.stopLines[v.direction.value]:
+        elif v.direction == Direction.SOUTH:
+            if not v.is_through and v.y + v.height > stopLines[v.direction.value]:
                 v.is_through = True
-        elif v.direction == c.Direction.WEST:
-            if not v.is_through and v.x < c.stopLines[v.direction.value]:
+        elif v.direction == Direction.WEST:
+            if not v.is_through and v.x < stopLines[v.direction.value]:
                 v.is_through = True
-        elif v.direction == c.Direction.NORTH:
-            if not v.is_through and v.y < c.stopLines[v.direction.value]:
+        elif v.direction == Direction.NORTH:
+            if not v.is_through and v.y < stopLines[v.direction.value]:
                 v.is_through = True
 
     def _stop(self, v: Vehicle, front: Vehicle):
         if front is not None and not front.is_through:
-            if v.direction == c.Direction.EAST:
-                v.stop = front.stop - front.width - c.stoppingGap
-            elif v.direction == c.Direction.SOUTH:
-                v.stop = front.stop - front.height - c.stoppingGap
-            elif v.direction == c.Direction.WEST:
-                v.stop = front.stop + front.width + c.stoppingGap
-            elif v.direction == c.Direction.NORTH:
-                v.stop = front.stop + front.height + c.stoppingGap
+            if v.direction == Direction.EAST:
+                v.stop = front.stop - front.width - stoppingGap
+            elif v.direction == Direction.SOUTH:
+                v.stop = front.stop - front.height - stoppingGap
+            elif v.direction == Direction.WEST:
+                v.stop = front.stop + front.width + stoppingGap
+            elif v.direction == Direction.NORTH:
+                v.stop = front.stop + front.height + stoppingGap
 
     def _move(self, v: Vehicle, front: Vehicle, index: int):
-        if v.direction == c.Direction.EAST:
+        if v.direction == Direction.EAST:
             if (v.x + v.width <= v.stop
                 or v.is_through
-                or (self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and not self.signals[v.direction.value][v.lane.value].turn)
-                or (v.turn == c.Turn.RIGHT
-                    and self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (v.turn == Turn.RIGHT
+                    and self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and self.signals[v.direction.value][v.lane.value].turn)) \
                     and (index == 0
-                         or v.x + v.width < front.x - c.stoppingGap):
-                if v.turn == c.Turn.LEFT and v.x + v.width >= c.left_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.NORTH.value]['turned_left'].append(v)
+                         or v.x + v.width < front.x - stoppingGap):
+                if v.turn == Turn.LEFT and v.x + v.width >= left_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.NORTH.value]['turned_left'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.NORTH
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.NORTH
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 90)
                     v.x = v.x + v.width - v.height
                     v.y = v.y - v.width + v.height
                     v.width = v.image.get_width()
                     v.height = v.image.get_height()
-                elif v.turn == c.Turn.RIGHT and v.x + v.width >= c.right_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.SOUTH.value]['turned_right'].append(v)
+                elif v.turn == Turn.RIGHT and v.x + v.width >= right_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.SOUTH.value]['turned_right'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.SOUTH
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.SOUTH
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 270)
                     v.x = v.x + v.width - v.height
                     v.width = v.image.get_width()
@@ -510,32 +506,32 @@ class TrafficLightController:
                 else:
                     v.x += v.speed
             else: v.is_stopped = True
-        elif v.direction == c.Direction.SOUTH:
+        elif v.direction == Direction.SOUTH:
             if (v.y + v.height <= v.stop
                 or v.is_through
-                or (self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and not self.signals[v.direction.value][v.lane.value].turn)
-                or (v.turn == c.Turn.RIGHT
-                    and self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (v.turn == Turn.RIGHT
+                    and self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and self.signals[v.direction.value][v.lane.value].turn)) \
                     and (index == 0
-                         or v.y + v.height < front.y - c.stoppingGap):
-                if v.turn == c.Turn.LEFT and v.y + v.height >= c.left_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.EAST.value]['turned_left'].append(v)
+                         or v.y + v.height < front.y - stoppingGap):
+                if v.turn == Turn.LEFT and v.y + v.height >= left_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.EAST.value]['turned_left'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.EAST
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.EAST
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 90)
                     v.y = v.y - v.width + v.height
                     v.width = v.image.get_width()
                     v.height = v.image.get_height()
-                elif v.turn == c.Turn.RIGHT and v.y + v.height >= c.right_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.WEST.value]['turned_right'].append(v)
+                elif v.turn == Turn.RIGHT and v.y + v.height >= right_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.WEST.value]['turned_right'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.WEST
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.WEST
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 270)
                     v.x = v.x + v.width - v.height
                     v.y = v.y - v.width + v.height
@@ -544,31 +540,31 @@ class TrafficLightController:
                 else:
                     v.y += v.speed
             else: v.is_stopped = True
-        elif v.direction == c.Direction.WEST:
+        elif v.direction == Direction.WEST:
             if (v.x >= v.stop
                 or v.is_through
-                or (self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and not self.signals[v.direction.value][v.lane.value].turn)
-                or (v.turn == c.Turn.RIGHT
-                    and self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (v.turn == Turn.RIGHT
+                    and self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and self.signals[v.direction.value][v.lane.value].turn)) \
                     and (index == 0
-                         or v.x > front.x + front.width + c.stoppingGap):
-                if v.turn == c.Turn.LEFT and v.x <= c.left_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.SOUTH.value]['turned_left'].append(v)
+                         or v.x > front.x + front.width + stoppingGap):
+                if v.turn == Turn.LEFT and v.x <= left_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.SOUTH.value]['turned_left'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.SOUTH
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.SOUTH
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 90)
                     v.width = v.image.get_width()
                     v.height = v.image.get_height()
-                elif v.turn == c.Turn.RIGHT and v.x <= c.right_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.NORTH.value]['turned_right'].append(v)
+                elif v.turn == Turn.RIGHT and v.x <= right_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.NORTH.value]['turned_right'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.NORTH
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.NORTH
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 270)
                     v.y = v.y - v.width + v.height
                     v.width = v.image.get_width()
@@ -576,32 +572,32 @@ class TrafficLightController:
                 else:
                     v.x -= v.speed
             else: v.is_stopped = True
-        elif v.direction == c.Direction.NORTH:
+        elif v.direction == Direction.NORTH:
             if (v.y >= v.stop
                 or v.is_through
-                or (self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and not self.signals[v.direction.value][v.lane.value].turn)
-                or (v.turn == c.Turn.RIGHT
-                    and self.signals[v.direction.value][v.lane.value].color == c.Color.GREEN
+                or (v.turn == Turn.RIGHT
+                    and self.signals[v.direction.value][v.lane.value].color == Color.GREEN
                     and self.signals[v.direction.value][v.lane.value].turn)) \
                     and (index == 0
-                         or v.y > front.y + front.height + c.stoppingGap):
-                if v.turn == c.Turn.LEFT and v.y <= c.left_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.WEST.value]['turned_left'].append(v)
+                         or v.y > front.y + front.height + stoppingGap):
+                if v.turn == Turn.LEFT and v.y <= left_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.WEST.value]['turned_left'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.WEST
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.WEST
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 90)
                     v.x = v.x + v.width - v.height
                     v.width = v.image.get_width()
                     v.height = v.image.get_height()
-                elif v.turn == c.Turn.RIGHT and v.y <= c.right_turn_lines[v.direction.value]:
-                    self.vehicles[c.Direction.EAST.value]['turned_right'].append(v)
+                elif v.turn == Turn.RIGHT and v.y <= right_turn_lines[v.direction.value]:
+                    self.vehicles[Direction.EAST.value]['turned_right'].append(v)
                     del self.vehicles[v.direction.value][v.lane.value][index]
                     v.is_turned = True
-                    v.direction = c.Direction.EAST
-                    v.turn = c.Turn.STRAIGHT
+                    v.direction = Direction.EAST
+                    v.turn = Turn.STRAIGHT
                     v.image = pygame.transform.rotate(v.image, 270)
                     v.width = v.image.get_width()
                     v.height = v.image.get_height()

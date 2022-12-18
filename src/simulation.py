@@ -6,9 +6,9 @@ import time
 
 import pygame
 
-from src.controllers.traffic_light import TrafficLightController
-from src.controllers.vehicle import Vehicle
-import src.controllers.constants as c
+from controllers.traffic_light import TrafficLightController
+from controllers.vehicle import Vehicle
+import controllers.constants as c
 
 vehicles = []
 
@@ -33,7 +33,6 @@ def generate_vehicles(tlc: TrafficLightController):
 def update_signals(tlc: TrafficLightController):
     while True:
         tlc.update_signals()
-
 
 
 class Main:
